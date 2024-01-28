@@ -26,5 +26,12 @@ if user_query is not None and user_query != "":
   st.session_state.chat_history.append(HumanMessage(content=user_query))
   st.session_state.chat_history.append(AIMessage(content=response))
   
-with st.sidebar:
-  st.write(st.session_state.chat_history)
+# conversation 
+for message in st.session_state.chat_history:
+  if isinstance(message, AIMessage):
+    with st.chat_message("AI"):
+      st.write(message.content)
+  elif isinstance(message, HumanMessage):
+    with st.chat_message("Human"):
+      st.write(message.content)
+      
