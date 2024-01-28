@@ -1,11 +1,20 @@
-# pip install streamlit langchain lanchain-openai
+# pip install streamlit langchain lanchain-openai beautifulsoup4
 
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
+from langchain_community.document_loaders import WebBaseLoader
 
 
 def get_response(user_input):
     return "I don't know"
+
+
+def get_vectorstore_from_url(url):
+    # get the text in document form
+    loader = WebBaseLoader(url)
+    documents = loader.load()
+
+    return documents
 
 
 # app config
@@ -25,6 +34,10 @@ if website_url is None or website_url == "":
     st.info("Please enter a website URL")
 
 else:
+    documents = get_vectorstore_from_url(website_url)
+    with st.sidebar:
+        st.write(documents)
+
     # user input
     user_query = st.chat_input("Type your message here...")
     if user_query is not None and user_query != "":
