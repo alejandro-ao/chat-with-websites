@@ -1,4 +1,4 @@
-# pip install streamlit langchain lanchain-openai beautifulsoup4
+# pip install streamlit langchain lanchain-openai beautifulsoup4 python-dotenv
 
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
@@ -6,7 +6,9 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
+from dotenv import load_dotenv
 
+load_dotenv()
 
 def get_response(user_input):
     return "I don't know"
