@@ -5,8 +5,10 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_community.document_loaders import WebBaseLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from dotenv import load_dotenv
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.chains import create_history_aware_retriever
 
 load_dotenv()
 
@@ -29,6 +31,23 @@ def get_vectorstore_from_url(url):
     return vector_store
 
 
+def get_context_retriever_chain(vector_store):
+    llm = ChatOpenAI()
+    
+    retriever = vector_store.as_retriever()
+    
+    prompt = ChatPromptTemplate.from_messages([
+      MessagesPlaceholder(variable_name="chat_history"),
+      ("user", "{input}"),
+      ("user", "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation")
+    ])
+    
+    retriever_chain = create_history_aware_retriever(llm, retriever, prompt)
+    
+    return retriever_chain
+    
+
+
 # app config
 st.set_page_config(page_title="Chat with websites", page_icon="🤖")
 st.title("Chat with websites")
@@ -46,7 +65,9 @@ if website_url is None or website_url == "":
     st.info("Please enter a website URL")
 
 else:
-    document_chunks = get_vectorstore_from_url(website_url)
+    vector_store = get_vectorstore_from_url(website_url)
+    
+    retriever_chain = get_context_retriever_chain(vector_store)
     
 
     # user input
@@ -55,6 +76,9 @@ else:
         response = get_response(user_query)
         st.session_state.chat_history.append(HumanMessage(content=user_query))
         st.session_state.chat_history.append(AIMessage(content=response))
+        
+        
+        
 
     # conversation
     for message in st.session_state.chat_history:
