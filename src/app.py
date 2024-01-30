@@ -64,10 +64,6 @@ def get_conversational_rag_chain(retriever_chain):
 # app config
 st.set_page_config(page_title="Chat with websites", page_icon="🤖")
 st.title("Chat with websites")
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [
-        AIMessage(content="Hello, I am a bot. How can I help you?"),
-    ]
 
 # sidebar
 with st.sidebar:
@@ -78,9 +74,17 @@ if website_url is None or website_url == "":
     st.info("Please enter a website URL")
 
 else:
-    vector_store = get_vectorstore_from_url(website_url)
+    # session state
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = [
+            AIMessage(content="Hello, I am a bot. How can I help you?"),
+        ]
+    if "vector_store" not in st.session_state:
+        st.session_state.vector_store = get_vectorstore_from_url(website_url)    
     
-    retriever_chain = get_context_retriever_chain(vector_store)
+    # create conversation chain
+    retriever_chain = get_context_retriever_chain(st.session_state.vector_store)
+    
     
 
     # user input
