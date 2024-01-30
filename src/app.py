@@ -85,14 +85,19 @@ else:
     # create conversation chain
     retriever_chain = get_context_retriever_chain(st.session_state.vector_store)
     
-    
+    conversation_rag_chain = get_conversational_rag_chain(retriever_chain)    
 
     # user input
     user_query = st.chat_input("Type your message here...")
     if user_query is not None and user_query != "":
-        response = get_response(user_query)
-        st.session_state.chat_history.append(HumanMessage(content=user_query))
-        st.session_state.chat_history.append(AIMessage(content=response))
+        # response = get_response(user_query)
+        response = conversation_rag_chain.invoke({
+            "chat_history": st.session_state.chat_history,
+            "input": user_query
+        })
+        st.write(response)
+        # st.session_state.chat_history.append(HumanMessage(content=user_query))
+        # st.session_state.chat_history.append(AIMessage(content=response))
         
        
 
