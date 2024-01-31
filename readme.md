@@ -58,5 +58,3 @@ Happy Coding! 🚀👨‍💻🤖
 *Don't forget to star this repo if you find it useful!*
 
 ---
-
-© [Your Name] - Empowering innovation with AI and Python.
