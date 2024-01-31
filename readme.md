@@ -2,7 +2,7 @@
 
 Welcome to the GitHub repository for the LangChain Chatbot with Streamlit GUI! This project is a comprehensive guide to building a chatbot capable of interacting with websites, extracting information, and communicating in a user-friendly manner. It leverages the power of LangChain 0.1.0 and integrates it with a Streamlit GUI for an enhanced user experience.
 
-    This repository is meant as supporting material for the [Youtube video tutorial](https://youtu.be/TrvhLP2CyVA).
+🟡 This repository is meant as supporting material for the [Youtube video tutorial](https://youtu.be/TrvhLP2CyVA).
 
 ## Features
 - **Website Interaction**: The chatbot uses the latest version of LangChain to interact with and extract information from various websites.
