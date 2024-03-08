@@ -63,7 +63,7 @@ def get_response(user_input):
     
     response = conversation_rag_chain.invoke({
         "chat_history": st.session_state.chat_history,
-        "input": user_query
+        "input": user_input
     })
     
     return response['answer']
